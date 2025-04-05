@@ -23,6 +23,8 @@ export default function Card(props: any) {
             <View style={styles.modalContent}>
               <Text style={styles.modalTitle}>{props.datos.titulo}</Text>
               <Image source={{ uri: props.datos.imagen }} style={styles.imgModal} />
+              <Text style={styles.modalTitle}>Precio: {props.datos.precio}</Text>
+              <Text style={styles.modalTitle}>Plataforma: {props.datos.plataforma}</Text>
               <Button title="Cerrar" onPress={() => setModalVisible(false)} />
             </View>
           </View>

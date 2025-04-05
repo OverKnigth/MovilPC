@@ -17,8 +17,7 @@ export default function ListaExternaScreen() {
     };
   
     return (
-      <View>
-        <Text>Lista Externa - API</Text>
+      <View style={styles.container}>
         <FlatList
           data={data}
           keyExtractor={(item, index) => index.toString()}
@@ -28,4 +27,11 @@ export default function ListaExternaScreen() {
     );
   }
   
-  const styles = StyleSheet.create({});
+  const styles = StyleSheet.create({
+    container: {
+        flex: 1,
+        backgroundColor: '#FBF6E9',
+        alignItems: 'center',
+        justifyContent: 'center',
+    },
+  });
