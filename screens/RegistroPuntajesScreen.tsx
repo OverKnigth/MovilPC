@@ -1,36 +1,48 @@
-import { FlatList, StyleSheet, Text, TextInput, View, Button, ScrollView, TouchableOpacity, Alert } from 'react-native';
-import React, { useEffect, useState } from 'react';
+import {
+  FlatList,
+  StyleSheet,
+  Text,
+  TextInput,
+  View,
+  Button,
+  ScrollView,
+  TouchableOpacity,
+  Alert,
+} from "react-native";
+import React, { useEffect, useState } from "react";
 import { getDatabase, ref, set } from "firebase/database";
-import { auth, db } from "../config/Config"; // 
+import { auth, db } from "../config/Config"; //
 import { onAuthStateChanged } from "firebase/auth";
 
 export default function RegistroPuntajesScreen({ navigation }: any) {
   const [nombre, setNombre] = useState("");
   const [puntaje, setPuntaje] = useState("");
-  const [fecha, setFecha] = useState(""); 
-  const [puntajes, setPuntajes] = useState<{ nombre: string; puntaje: number; juego: string; fecha: string }[]>([]);
+  const [fecha, setFecha] = useState("");
+  const [puntajes, setPuntajes] = useState<
+    { nombre: string; puntaje: number; juego: string; fecha: string }[]
+  >([]);
   const [data, setData] = useState([]);
   const [juegoSeleccionado, setJuegoSeleccionado] = useState<any>(null);
-  const [usuarioId, setUsuarioId] = useState<string | null>(null); 
+  const [usuarioId, setUsuarioId] = useState<string | null>(null);
 
-  
   useEffect(() => {
     onAuthStateChanged(auth, (user) => {
       if (user) {
-        setUsuarioId(user.uid); 
+        setUsuarioId(user.uid);
       } else {
         Alert.alert("No hay usuario autenticado", "Por favor, inicia sesión.");
       }
     });
 
-    
     getData();
   }, []);
 
   const getData = async () => {
-    const resp = await fetch("https://jritsqmet.github.io/web-api/videojuegos.json");
+    const resp = await fetch(
+      "https://jritsqmet.github.io/web-api/videojuegos.json"
+    );
     const json = await resp.json();
-    setData(json.videojuegos); 
+    setData(json.videojuegos);
   };
 
   const agregarPuntaje = () => {
@@ -39,25 +51,27 @@ export default function RegistroPuntajesScreen({ navigation }: any) {
       return;
     }
 
-    const timestamp = Date.now(); 
+    const timestamp = Date.now();
 
-    
     set(ref(db, `usuarios/${usuarioId}/puntajes/${timestamp}`), {
       nombre,
       puntaje: parseInt(puntaje),
       juego: juegoSeleccionado.titulo,
       juegoId: juegoSeleccionado.id,
-      fecha, 
+      fecha,
     })
       .then(() => {
         Alert.alert("Éxito", "Puntaje guardado correctamente.");
-        setNombre(""); 
+        setNombre("");
         setPuntaje("");
-        setFecha(""); 
-        setJuegoSeleccionado(null); 
+        setFecha("");
+        setJuegoSeleccionado(null);
       })
       .catch((error) => {
-        Alert.alert("Error", "No se pudo guardar el puntaje. Intenta nuevamente.");
+        Alert.alert(
+          "Error",
+          "No se pudo guardar el puntaje. Intenta nuevamente."
+        );
         console.log(error);
       });
   };
@@ -72,7 +86,10 @@ export default function RegistroPuntajesScreen({ navigation }: any) {
         <View style={styles.seleccionadoBox}>
           <Text style={{ fontWeight: "bold" }}>Juego seleccionado:</Text>
           <Text> {juegoSeleccionado.titulo}</Text>
-          <Button title="Cambiar juego" onPress={() => setJuegoSeleccionado(null)} />
+          <Button
+            title="Cambiar juego"
+            onPress={() => setJuegoSeleccionado(null)}
+          />
         </View>
       ) : (
         <>
@@ -83,7 +100,7 @@ export default function RegistroPuntajesScreen({ navigation }: any) {
             renderItem={({ item }) => (
               <TouchableOpacity
                 style={styles.juegoBtn}
-                onPress={() => setJuegoSeleccionado(item)} 
+                onPress={() => setJuegoSeleccionado(item)}
               >
                 <Text>{item.titulo}</Text>
               </TouchableOpacity>
@@ -123,7 +140,7 @@ export default function RegistroPuntajesScreen({ navigation }: any) {
 const styles = StyleSheet.create({
   container: {
     padding: 16,
-    backgroundColor: "#fff",
+    backgroundColor: "#FBF6E9",
   },
   titulo: {
     fontSize: 24,
@@ -136,7 +153,7 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
   },
   input: {
-    backgroundColor: "#f1f1f1",
+    backgroundColor: "white",
     padding: 10,
     marginBottom: 10,
     borderRadius: 10,
@@ -147,13 +164,13 @@ const styles = StyleSheet.create({
   },
   juegoBtn: {
     padding: 10,
-    backgroundColor: "#f0f0f0",
+    backgroundColor: "white",
     marginBottom: 8,
     borderRadius: 8,
   },
   seleccionadoBox: {
     padding: 10,
-    backgroundColor: "#d4f5dc",
+    backgroundColor: "white",
     marginBottom: 15,
     borderRadius: 8,
   },

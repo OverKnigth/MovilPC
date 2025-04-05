@@ -11,7 +11,7 @@ import React, { useState } from "react";
 import { signInWithEmailAndPassword } from "firebase/auth";
 import { auth } from "../config/Config";
 
-export default function LoginScreen({navigation}:any) {
+export default function LoginScreen({ navigation }: any) {
   const [correo, setcorreo] = useState("");
   const [contrasenia, setcontrasenia] = useState("");
 
@@ -20,14 +20,17 @@ export default function LoginScreen({navigation}:any) {
       .then((userCredential) => {
         // Signed in
         const user = userCredential.user;
-        navigation.navigate("Tab")
+        navigation.navigate("Tab");
         //console.log(user.uid);
         // ...
       })
       .catch((error) => {
         const errorCode = error.code;
         const errorMessage = error.message;
-        Alert.alert("Error al iniciar sesión, revisa tus credenciales", errorMessage);
+        Alert.alert(
+          "Error al iniciar sesión, revisa tus credenciales",
+          errorMessage
+        );
       });
   }
   return (
@@ -44,8 +47,20 @@ export default function LoginScreen({navigation}:any) {
       <Text style={{ fontSize: 20, padding: 15, textAlign: "center" }}>
         Ingresa tus credenciales, guarda y visializa tus estadisticas.
       </Text>
-      <TextInput placeholder="Correo Electronico" style={styles.input} onChangeText={(texto)=>setcorreo(texto)} value={correo}/>
-      <TextInput placeholder="Contraseña" style={styles.input} onChangeText={(texto)=>setcontrasenia(texto)} value={contrasenia}/>
+      <TextInput
+        placeholder="Correo Electronico"
+        style={styles.input}
+        onChangeText={(texto) => setcorreo(texto)}
+        value={correo}
+        
+      />
+      <TextInput
+        placeholder="Contraseña"
+        style={styles.input} 
+        onChangeText={(texto) => setcontrasenia(texto)}
+        value={contrasenia}
+        secureTextEntry={true}
+      />
       <TouchableOpacity style={styles.btn} onPress={login}>
         <Text style={styles.textb}>Iniciar de Sesion</Text>
       </TouchableOpacity>
