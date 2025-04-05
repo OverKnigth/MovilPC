@@ -1,61 +1,76 @@
-import { Alert, Button, Image, Modal, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
+import { Alert, Button, Image, Modal, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
 import React, { useState } from 'react'
 
 export default function Card(props: any) {
-    const [modalVisible, setmodalVisible] = useState(false);
+    const [modalVisible, setModalVisible] = useState(false);
+
+    if (!props.datos) return null;
   
     return (
-        <View>
-            <Text>{props.datos.titulo}</Text>
-        </View>
+      <>
+        <TouchableOpacity style={styles.btn} onPress={() => setModalVisible(true)}>
+          <Text>🎮 {props.datos.titulo}</Text>
+          <Image source={{ uri: props.datos.imagen }} style={styles.img} />
+        </TouchableOpacity>
+  
+        <Modal
+          visible={modalVisible}
+          transparent={true}
+          animationType="slide"
+          onRequestClose={() => setModalVisible(false)}
+        >
+          <View style={styles.modalOverlay}>
+            <View style={styles.modalContent}>
+              <Text style={styles.modalTitle}>{props.datos.titulo}</Text>
+              <Image source={{ uri: props.datos.imagen }} style={styles.imgModal} />
+              <Button title="Cerrar" onPress={() => setModalVisible(false)} />
+            </View>
+          </View>
+        </Modal>
+      </>
     );
   }
   
   const styles = StyleSheet.create({
     img: {
-      width: 50,
-      height: 50,
+      width: 100,
+      height: 100,
+      borderRadius: 10,
     },
-    imgLarge: {
+    imgModal: {
       width: 200,
       height: 200,
-      alignSelf: 'center',
-      marginVertical: 10,
+      marginVertical: 20,
+      borderRadius: 10,
     },
     btn: {
-      backgroundColor: "white",
+      backgroundColor: "#f8f8f8",
       margin: 10,
-      padding: 10,
-      borderRadius: 10,
+      padding: 15,
+      borderRadius: 15,
+      alignItems: "center",
+      shadowColor: "#000",
+      shadowOpacity: 0.2,
+      shadowRadius: 4,
+      shadowOffset: { width: 0, height: 2 },
+      elevation: 5,
+    },
+    modalOverlay: {
+      flex: 1,
+      backgroundColor: 'rgba(0,0,0,0.5)',
+      justifyContent: "center",
       alignItems: "center",
     },
-    modalContainer: {
-      flex: 1,
-      backgroundColor: "rgba(0,0,0,0.6)",
-      justifyContent: "center",
-      alignItems: "center"
-    },
     modalContent: {
-      width: "90%",
+      width: 300,
       backgroundColor: "white",
       borderRadius: 20,
       padding: 20,
-      maxHeight: "90%"
+      alignItems: "center",
     },
-    title: {
-      fontSize: 18,
-      fontWeight: "bold",
-      marginBottom: 10,
-      textAlign: "center"
+    modalTitle: {
+      fontWeight: 'bold',
+      fontSize: 24,
+      textAlign: "center",
     },
-    sectionTitle: {
-      marginTop: 10,
-      fontWeight: "bold",
-    },
-    opinionBox: {
-      marginVertical: 5,
-      backgroundColor: "#f1f1f1",
-      padding: 10,
-      borderRadius: 8,
-    }
   });
